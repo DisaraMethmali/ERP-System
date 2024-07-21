@@ -4,12 +4,14 @@ include 'db_connect.php'; // Include the database connection
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Delete the item
+    // Prepare the SQL statement
     $stmt = $conn->prepare("DELETE FROM item WHERE id = ?");
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
-        echo "Item deleted successfully!";
+        // Redirect to view_items.php with a success message
+        header("Location: view_items.php?message=Item deleted successfully!");
+        exit;
     } else {
         echo "Error: " . $stmt->error;
     }
@@ -20,6 +22,4 @@ if (isset($_GET['id'])) {
 }
 
 $conn->close();
-header("Location: view_items.php");
-exit;
 ?>
