@@ -54,44 +54,71 @@ $conn->close();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice Item Report</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+        table {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Invoice Item Report</h2>
-    <form method="POST" action="invoice_item_report.php">
-        <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate" name="startDate" value="<?php echo htmlspecialchars($startDate, ENT_QUOTES, 'UTF-8'); ?>" required><br>
-        <label for="endDate">End Date:</label>
-        <input type="date" id="endDate" name="endDate" value="<?php echo htmlspecialchars($endDate, ENT_QUOTES, 'UTF-8'); ?>" required><br>
-        <input type="submit" value="Generate Report">
-    </form>
+    <div class="container">
+        <h2 class="mb-4">Invoice Item Report</h2>
+        <form method="POST" action="invoice_item_report.php" class="mb-4">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="startDate" class="form-label">Start Date:</label>
+                    <input type="date" id="startDate" name="startDate" class="form-control" value="<?php echo htmlspecialchars($startDate, ENT_QUOTES, 'UTF-8'); ?>" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="endDate" class="form-label">End Date:</label>
+                    <input type="date" id="endDate" name="endDate" class="form-control" value="<?php echo htmlspecialchars($endDate, ENT_QUOTES, 'UTF-8'); ?>" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Report</button>
+        </form>
 
-    <?php if (!empty($invoiceItems)): ?>
-        <h3>Invoice Items from <?php echo htmlspecialchars($startDate, ENT_QUOTES, 'UTF-8'); ?> to <?php echo htmlspecialchars($endDate, ENT_QUOTES, 'UTF-8'); ?></h3>
-        <table border="1">
-            <tr>
-                <th>Invoice Number</th>
-                <th>Invoiced Date</th>
-                <th>Customer Name</th>
-                <th>Item Name</th>
-                <th>Item Code</th>
-                <th>Item Category</th>
-                <th>Item Unit Price</th>
-            </tr>
-            <?php foreach ($invoiceItems as $item): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($item['invoice_no'], ENT_QUOTES, 'UTF-8'); ?></td>
-                    <td><?php echo htmlspecialchars($item['invoiced_date'], ENT_QUOTES, 'UTF-8'); ?></td>
-                    <td><?php echo htmlspecialchars($item['customer_name'], ENT_QUOTES, 'UTF-8'); ?></td>
-                    <td><?php echo htmlspecialchars($item['item_name'], ENT_QUOTES, 'UTF-8'); ?></td>
-                    <td><?php echo htmlspecialchars($item['item_code'], ENT_QUOTES, 'UTF-8'); ?></td>
-                    <td><?php echo htmlspecialchars($item['item_category'], ENT_QUOTES, 'UTF-8'); ?></td>
-                    <td><?php echo htmlspecialchars($item['unit_price'], ENT_QUOTES, 'UTF-8'); ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
-    <?php endif; ?>
+        <?php if (!empty($invoiceItems)): ?>
+            <h3 class="mb-4">Invoice Items from <?php echo htmlspecialchars($startDate, ENT_QUOTES, 'UTF-8'); ?> to <?php echo htmlspecialchars($endDate, ENT_QUOTES, 'UTF-8'); ?></h3>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Invoice Number</th>
+                        <th>Invoiced Date</th>
+                        <th>Customer Name</th>
+                        <th>Item Name</th>
+                        <th>Item Code</th>
+                        <th>Item Category</th>
+                        <th>Item Unit Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($invoiceItems as $item): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($item['invoice_no'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($item['invoiced_date'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($item['customer_name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($item['item_name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($item['item_code'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($item['item_category'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($item['unit_price'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
