@@ -13,11 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($itemCode) || empty($itemName) || empty($itemCategory) || empty($itemSubcategory) || empty($quantity) || empty($unitPrice)) {
         $error = "All fields are required.";
     } elseif (!is_numeric($itemCategory) || $itemCategory <= 0) {
-        $error = "Item Category must be a positive number.";
+        $error = "Item Category must be a positive integer.";
     } elseif (!is_numeric($itemSubcategory) || $itemSubcategory <= 0) {
-        $error = "Item Subcategory must be a positive number.";
+        $error = "Item Subcategory must be a positive integer.";
     } elseif (!is_numeric($quantity) || $quantity <= 0) {
-        $error = "Quantity must be a positive number.";
+        $error = "Quantity must be a positive integer.";
     } elseif (!is_numeric($unitPrice) || $unitPrice <= 0) {
         $error = "Unit Price must be a positive number.";
     } else {
@@ -27,7 +27,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute statement
         if ($stmt->execute()) {
-            $success = "Item registered successfully!";
+            // Redirect to view items page
+            header("Location: view_items.php");
+            exit();
         } else {
             $error = "Error: " . $stmt->error;
         }
@@ -40,10 +42,23 @@ $conn->close();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Item</title>
-    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+        .form-control.is-valid {
+            border-color: #198754;
+        }
+        .container {
+            max-width: 1200px;
+        }
+    </style>
     <script>
         function validateForm() {
             const itemCategory = document.getElementById('itemCategory').value;
@@ -57,36 +72,77 @@ $conn->close();
             }
             return true;
         }
+
+        // Restrict fields to numeric values only
+        function restrictInput(e) {
+            const regex = /^[0-9]*\.?[0-9]*$/; // Allow numbers and decimal points
+            if (!regex.test(e.target.value)) {
+                e.target.value = e.target.value.slice(0, -1); // Remove invalid character
+            }
+        }
+
+        // Restrict fields to integers only
+        function restrictIntegerInput(e) {
+            const regex = /^[0-9]*$/; // Allow only integer numbers
+            if (!regex.test(e.target.value)) {
+                e.target.value = e.target.value.slice(0, -1); // Remove invalid character
+            }
+        }
     </script>
 </head>
 <body>
-    <h2>Register Item</h2>
-    <?php if (isset($error)): ?>
-        <p style="color: red;"><?php echo $error; ?></p>
-    <?php endif; ?>
-    <?php if (isset($success)): ?>
-        <p style="color: green;"><?php echo $success; ?></p>
-    <?php endif; ?>
-    <form method="POST" action="register_item.php" onsubmit="return validateForm()">
-        <label for="itemCode">Item Code:</label>
-        <input type="text" id="itemCode" name="itemCode" required><br>
+    <div class="container mt-5">
+        <h2>Register Item</h2>
+        <?php if (isset($error)): ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?>
+            </div>
+        <?php endif; ?>
+        <?php if (isset($success)): ?>
+            <div class="alert alert-success" role="alert">
+                <?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?>
+            </div>
+        <?php endif; ?>
+        <form method="POST" action="register_item.php" onsubmit="return validateForm()">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="itemCode" class="form-label">Item Code:</label>
+                        <input type="text" id="itemCode" name="itemCode" class="form-control" required>
+                    </div>
 
-        <label for="itemName">Item Name:</label>
-        <input type="text" id="itemName" name="itemName" required><br>
+                    <div class="mb-3">
+                        <label for="itemName" class="form-label">Item Name:</label>
+                        <input type="text" id="itemName" name="itemName" class="form-control" required>
+                    </div>
 
-        <label for="itemCategory">Item Category:</label>
-        <input type="number" id="itemCategory" name="itemCategory" min="1" required><br>
+                    <div class="mb-3">
+                        <label for="itemCategory" class="form-label">Item Category:</label>
+                        <input type="text" id="itemCategory" name="itemCategory" class="form-control" oninput="restrictIntegerInput(event)" required>
+                    </div>
 
-        <label for="itemSubcategory">Item Subcategory:</label>
-        <input type="number" id="itemSubcategory" name="itemSubcategory" min="1" required><br>
+                    <div class="mb-3">
+                        <label for="itemSubcategory" class="form-label">Item Subcategory:</label>
+                        <input type="text" id="itemSubcategory" name="itemSubcategory" class="form-control" oninput="restrictIntegerInput(event)" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <input type="text" id="quantity" name="quantity" class="form-control" oninput="restrictIntegerInput(event)" required>
+                    </div>
 
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" min="1" required><br>
+                    <div class="mb-3">
+                        <label for="unitPrice" class="form-label">Unit Price:</label>
+                        <input type="text" id="unitPrice" name="unitPrice" class="form-control" oninput="restrictInput(event)" required>
+                    </div>
 
-        <label for="unitPrice">Unit Price:</label>
-        <input type="number" step="0.01" id="unitPrice" name="unitPrice" min="0.01" required><br>
+                    <button type="submit" class="btn btn-primary">Register Item</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
-        <input type="submit" value="Register Item">
-    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
