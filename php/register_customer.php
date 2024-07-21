@@ -42,11 +42,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->close();
             $conn->close();
 
-            // Output JavaScript to show alert and redirect
-            echo "<script>
-                    alert('Customer registered successfully.');
-                    window.location.href = 'view_customers.php';
-                  </script>";
+            // Output SweetAlert JavaScript to show alert and redirect
+            echo "<!DOCTYPE html>
+                  <html lang='en'>
+                  <head>
+                      <meta charset='UTF-8'>
+                      <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                      <title>Success</title>
+                      <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css'>
+                      <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+                  </head>
+                  <body>
+                      <script>
+                          Swal.fire({
+                              title: 'Success!',
+                              text: 'Customer registered successfully.',
+                              icon: 'success',
+                              confirmButtonText: 'OK'
+                          }).then((result) => {
+                              if (result.isConfirmed) {
+                                  window.location.href = 'view_customers.php';
+                              }
+                          });
+                      </script>
+                  </body>
+                  </html>";
             exit();
         } else {
             die('Execute Error: ' . $stmt->error);
@@ -64,6 +84,8 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Registration</title>
     <link rel="stylesheet" href="../css/styles.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
     <div class="container">
