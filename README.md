@@ -39,22 +39,8 @@ This project is an ERP System for managing items. It includes functionalities to
     - Open `php/db_connect.php`.
     - Update the database connection details (hostname, username, password, and database name) to match your local environment.
 
-    ```php
-    <?php
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "assignment";
+   ![image](https://github.com/user-attachments/assets/b4dc30e0-4959-4b3f-a7ed-f8ea9552e2ca)
 
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    ?>
-    ```
 
 6. **Access the Project**
 
