@@ -133,7 +133,7 @@ $result = $conn->query($sql);
              <a href="search_customer.php" class=" btn btn-secondary mb-3">
                Search
             </a>
-            <a href="add_customer.php" class=" btn btn-success mb-3">
+            <a href="register_customer.php" class=" btn btn-success mb-3">
                 <i class="fas fa-plus"></i> Add 
             </a>
 
