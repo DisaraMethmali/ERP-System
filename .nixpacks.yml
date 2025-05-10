@@ -4,7 +4,7 @@ providers:
 phases:
   setup:
     nixPkgs:
-      - php81
+      - php74
       - composer
 
 start:
