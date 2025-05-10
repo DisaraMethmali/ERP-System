@@ -2,9 +2,11 @@ providers:
   - php
 
 phases:
-  install:
+  setup:
     nixPkgs:
-      - php81  # You can also try php82 if available
+      - php81
+      - composer
 
 start:
   cmd: "php -S 0.0.0.0:8080 -t php"
+
