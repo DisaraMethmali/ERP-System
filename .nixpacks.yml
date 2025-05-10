@@ -1,4 +1,10 @@
-language: php
+providers:
+  - php
+
 build:
-  cmd: "composer install"
-  run: "php -S 0.0.0.0:8080 -t public"
+  # Optional if you're not using Composer
+  buildCmd: ""
+
+start:
+  cmd: "php -S 0.0.0.0:8080 -t php"
+
