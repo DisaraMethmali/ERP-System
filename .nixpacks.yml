@@ -1,10 +1,10 @@
 providers:
   - php
 
-build:
-  # Optional if you're not using Composer
-  buildCmd: ""
+phases:
+  install:
+    nixPkgs:
+      - php81  # You can also try php82 if available
 
 start:
   cmd: "php -S 0.0.0.0:8080 -t php"
-
