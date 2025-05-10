@@ -1,2 +1,8 @@
-build:
-  buildCmd: "composer install"
+{
+  "name": "yourname/yourproject",
+  "description": "A simple PHP project",
+  "require": {
+    "php": ">=7.4"
+  }
+}
+
